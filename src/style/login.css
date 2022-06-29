@@ -1,0 +1,42 @@
+
+#body{
+    background-image: url(https://wallpaperaccess.com/full/3902116.jpg);
+background-size: cover;
+
+}
+#card{
+background-color: transparent;
+border: none;
+}
+.login{
+    margin-top:12vw;
+}
+#imgll{
+    margin-left: 41%;
+    font-size: 4vw;
+    color: rgb(240, 242, 204);
+    
+}
+#imgl{
+    margin-left: 33%;
+    font-size: 4vw;
+    color: rgb(240, 242, 204);
+    
+}
+.signup{
+  margin-top: 16vw;
+
+}
+input{
+    background: transparent;
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid rgb(34, 34, 186);
+   padding: 3%;
+  color: rgb(0, 99, 40);
+}
+
+::-webkit-input-placeholder{
+    color: rgb(19, 5, 107);
+    opacity: 90%;
+}

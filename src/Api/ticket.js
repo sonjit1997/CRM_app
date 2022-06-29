@@ -1,0 +1,32 @@
+import axios from "axios";
+
+const BASE_URL = process.env.REACT_APP_SERVER_URL;
+
+
+export async function fetchTicket(){
+    return await axios.get(`${BASE_URL}/crm/api/v1/tickets`,
+    {
+        headers:{
+            'x-access-token' : localStorage.getItem('token')
+        }
+    },
+    {
+        "userId" : localStorage.getItem('userId')
+    }
+    )
+}
+
+
+
+export async function updateSelectTicket(id,selecttedTicket){
+    return await axios.put(`${BASE_URL}/crm/api/v1/tickets/${id}`,selecttedTicket,
+    {
+        headers:{
+            'x-access-token' : localStorage.getItem('token')
+        }
+    },
+    {
+        "userId" : localStorage.getItem('userId')
+    }
+    )
+}

@@ -1,0 +1,68 @@
+#border-a{
+    border-bottom: 7px solid rgb(207, 207, 28); 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, .08) 0 6px 10px rgba(0, 0, 0, .05);
+    cursor: pointer;
+    transform: .3 ease-in;
+    font-size: larger;
+    
+}
+
+#border-a:hover{
+    transform:scale(1.05)
+
+}
+
+#pen-a{
+    color: rgb(180, 180, 15); 
+}
+
+#border-b{
+    border-bottom: 7px solid rgb(21, 220, 124); 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, .08) 0 6px 10px rgba(0, 0, 0, .05);
+    cursor: pointer;
+    transform: .3 ease-in;
+    font-size: larger;
+}
+
+#border-b:hover{
+    transform:scale(1.05)
+
+}
+
+#pen-b{
+    color: rgb(13, 201, 110); 
+}
+
+#border-c{
+    border-bottom: 7px solid rgb(225, 84, 56); 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, .08) 0 6px 10px rgba(0, 0, 0, .05);
+    cursor: pointer;
+    transform: .3 ease-in;
+    font-size: larger;
+}
+
+#border-c:hover{
+    transform:scale(1.05)
+
+}
+
+#pen-c{
+    color: rgb(225, 84, 56); 
+}
+
+#border-d{
+    border-bottom: 7px solid rgb(19, 170, 175); 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, .08) 0 6px 10px rgba(0, 0, 0, .05);
+    cursor: pointer;
+    transform: .3 ease-in;
+    font-size: larger;
+}
+
+#border-d:hover{
+    transform:scale(1.05)
+
+}
+
+#pen-d{
+    color: rgb(10, 157, 162); 
+}
