@@ -37,9 +37,9 @@ function Login() {
     userSignup(data).then(function (response) {
             if (response.status === 201) {
               setSignup(false)
-              clearState()
+            
               setError(false)
-              setMessage("User Signed Up Successfully...")
+              setMessage("Signed Up Successfull.You can Signin now")
             }
         })
         .catch(function (error) {
@@ -56,9 +56,6 @@ function Login() {
   const history = useNavigate();
 
   const loginFn = (e) => {
-
-    
-
     const data = {
       userId: userId,
       password: userPassword,
@@ -113,7 +110,7 @@ function Login() {
   };
 
   const toggleSignUp = () => {
-    clearState();
+   
     setSignup(!signUp);
 
   }
@@ -123,15 +120,6 @@ function Login() {
 
   }
 
-  const clearState = () => {
-    setMessage("")
-    setError(false)
-    setUserId("")
-    setUserPassword("")
-    setUserName("")
-    setUserEmail("")
-
-  }
 
 
   return (
@@ -141,7 +129,7 @@ function Login() {
           <div className="col">
             {!signUp ? (
               <div className="login">
-              <i class="bi bi-person"  id="imgl"></i>
+           
                 <form onSubmit={loginFn}>
                   <input
                     className="input-group  m-2 "
@@ -176,7 +164,7 @@ function Login() {
               </div>
             ) : (
               <div className="signup">
-              <i class="bi bi-person-plus" id="imgll" ></i>
+             
                 <form onSubmit={signupFn}>
                   <input
                     className="input-group m-2 "

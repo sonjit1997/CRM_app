@@ -11,20 +11,9 @@ border: none;
 .login{
     margin-top:12vw;
 }
-#imgll{
-    margin-left: 41%;
-    font-size: 4vw;
-    color: rgb(33, 113, 142);
-    
-}
-#imgl{
-    margin-left: 5vw;
-    font-size: 4vw;
-    color: rgb(33, 113, 142);
-    
-}
+
 .signup{
-  margin-top: 16vw;
+  margin-top: 20vw;
 
 }
 input{
@@ -49,7 +38,7 @@ input{
   
 }
 #signupbtn:hover{
-    border-bottom: 2px solid rgb(23, 188, 225) ;
+    border-bottom: 2px solid rgb(212, 21, 21) ;
 }
 #loginbtn{
     font-weight: 600;
@@ -73,5 +62,5 @@ input{
     
   }
   #loginbtn2:hover{
-      border-bottom: 2px solid rgb(23, 188, 225) ;
+      border-bottom: 2px solid rgb(234, 54, 22) ;
   }

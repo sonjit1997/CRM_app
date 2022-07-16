@@ -81,6 +81,7 @@ function Customer() {
        // console.log(selecttedTicket);
         console.log("update successfully");
         closeUserModal();
+        fetchTickets();
         
       })
       .catch(function (error) {
