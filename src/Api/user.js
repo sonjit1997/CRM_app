@@ -13,8 +13,8 @@ export async function getAllusers(){
     )
 };
 
-export async function getuserId(userId,data){
-    return await axios.get(`${BASE_URL}/crm/api/v1/users/${userId}`,data,
+export async function updateSelectteduserId(userId,data){
+    return await axios.put(`${BASE_URL}/crm/api/v1/users/${userId}`,data,
     {
         headers:{
             'x-access-token': localStorage.getItem('token')

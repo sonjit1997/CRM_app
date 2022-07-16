@@ -1,108 +1,138 @@
 import React, { useState } from "react";
 import { DropdownButton, Dropdown } from "react-bootstrap";
-import { ToastContainer, toast } from 'react-toastify';
 import { userSignup, userSignin } from "../Api/auth";
 import { useNavigate } from "react-router-dom";
 import "../style/login.css";
 
 function Login() {
-  const [signUp, setshowsignUp] = useState(false);
-  const [userType, setuserType] = useState("CUSTOMER");
-  const [userSignupData, setUserSignupData] = useState({});
+
+  const [signUp, setSignup] = useState(false);
   const [message, setMessage] = useState("");
-  const toggleSignUp = () => {
-    setshowsignUp(!signUp);
-  };
 
-  const handleSelect = (e) => {
-    setuserType(e);
-  };
+  const [userId, setUserId] = useState("")
+  const [userPassword, setUserPassword] = useState("")
+  const [userName, setUserName] = useState("")
+  const [userEmail, setUserEmail] = useState("")
+  const [userType, setUserType] = useState("CUSTOMER")
+  const [error, setError] = useState(false)
 
-  const updateSignupData = (e) => {
-    userSignupData[e.target.id] = e.target.value;
-    //console.log(userSignupData);
-  };
+
+ 
 
   const signupFn = (e) => {
-    const username = userSignupData.username;
-    const userId = userSignupData.userId;
-    const email = userSignupData.email;
-    const password = userSignupData.password;
-
     const data = {
-      name: username,
+      name: userName,
       userId: userId,
-      email: email,
-      userTypes: userType,
-      password: password,
-    };
-    // console.log("DATA", data);
+      email: userEmail,
+      userType: userType,
+      password: userPassword
+  };
+
+
+    //console.log("DATA", data);
 
     e.preventDefault();
 
-    userSignup(data)
-      .then(function (response) {
-        if (response === 201) {
-          history(0);
-        }
-      })
-      .catch(function (error) {
-        if (error.response.status === 400) {
-          setMessage(error.response.data.message);
-        } else {
-          console.log(error);
-        }
-      });
+    
+    userSignup(data).then(function (response) {
+            if (response.status === 201) {
+              setSignup(false)
+              clearState()
+              setError(false)
+              setMessage("User Signed Up Successfully...")
+            }
+        })
+        .catch(function (error) {
+            if(error.response.status===400)
+            {
+                setError(true)
+                setMessage(error.response.data.message);
+            
+                }    
+            else
+                console.log(error);
+        });
   };
   const history = useNavigate();
 
   const loginFn = (e) => {
-    const userId = userSignupData.userId;
-    const password = userSignupData.password;
+
+    
 
     const data = {
       userId: userId,
-      password: password,
+      password: userPassword,
     };
-    // console.log("DATA", data);
+    
     e.preventDefault();
 
     userSignin(data)
       .then(function (response) {
-        console.log(response);
-        if (response.status === 200) {
-          
-          localStorage.setItem("name", response.data.name);
-          localStorage.setItem("userId", response.data.userId);
-          localStorage.setItem("email", response.data.email);
-          localStorage.setItem("userTypes", response.data.userTypes);
-          localStorage.setItem("userStatus", response.data.userStatus);
-          localStorage.setItem("token", response.data.accessToken);
+       // console.log(response);
 
-          if (response.data.userTypes === "CUSTOMER") {
-            history("/customer");
-          } else if (response.data.userTypes === "ENGINEER") {
-            history("/engineer");
-          } else {
-            history("/admin");
-          }
+      
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("userTypes", response.data.userTypes);
+        localStorage.setItem("userStatus", response.data.userStatus);
+        localStorage.setItem("token", response.data.accessToken);
+
+        if (response.data.userTypes === "CUSTOMER") {
+          history("/customer");
+        } else if (response.data.userTypes === "ENGINEER") {
+          history("/engineer");
+        } else {
+          history("/admin");
         }
+
       })
       .catch(function (error) {
         if (error.response.status === 400) {
           setMessage(error.response.data.message);
         } else {
           console.log(error);
+          setMessage(error.resonse.data.message);
+
         }
       });
   };
-  //toastify
-  const notify = () => toast("Login Successfull",
- {position: "top-center",
- pauseOnHover: false});
- const notifyy = () => toast("Signup Successfull",
- {position: "top-center",
- pauseOnHover: false});
+
+  const updateSignupData = (e) => {
+    setMessage("")
+    if(e.target.id === "userId")
+      setUserId(e.target.value)
+    else if(e.target.id === "password")
+      setUserPassword(e.target.value)
+    else if(e.target.id === "password")
+      setUserPassword(e.target.value)
+    else if(e.target.id === "username")
+      setUserName(e.target.value)
+    else
+      setUserEmail(e.target.value)
+  };
+
+  const toggleSignUp = () => {
+    clearState();
+    setSignup(!signUp);
+
+  }
+
+  const handleSelect = (e) => {
+    setUserType(e)
+
+  }
+
+  const clearState = () => {
+    setMessage("")
+    setError(false)
+    setUserId("")
+    setUserPassword("")
+    setUserName("")
+    setUserEmail("")
+
+  }
+
 
   return (
     <div className=" d-flex justify-content-center align-items-center vh-100" id="body">
@@ -127,16 +157,20 @@ function Login() {
                     id="password"
                     onChange={updateSignupData}
                   />
-                  <button className="btn btn-primary m-2  d-flex justify-content-center form-control" onClick={notify}>
+                  <div className="d-flex">
+                  <button className="btn   m-2  justify-content-center " id="loginbtn" >
                     Login 
-                  <ToastContainer />
                   </button>
                   <div
                     className="text-center text-warning"
                     onClick={() => toggleSignUp()}
                   >
-                    Not a member? Signup
+                   <button className="btn  justify-content-center " id="signupbtn">
+                    Signup
+                   </button>
                   </div>
+                  </div>
+                  
                   <div className="text-danger text-center">{message}</div>
                 </form>
               </div>
@@ -191,15 +225,18 @@ function Login() {
                       </Dropdown.Item>
                     </DropdownButton>
                   </div>
-                  <button className="btn btn-primary m-2 d-flex justify-content-center form-control align-items-center" onClick={notifyy}>
-                    Signup
-                  </button>
-                  <ToastContainer/>
+                  <div className="d-flex">
                   <div
                     className="text-center text-warning"
                     onClick={() => toggleSignUp()}
                   >
-                    Already a member? Login
+                  <button className="btn  justify-content-center " id="loginbtn2" >
+                    Login 
+                  </button>
+                  </div>
+                   <button className="btn  justify-content-center " id="signupbtn2">
+                    Signup
+                   </button>
                   </div>
                   <div className="text-danger text-center">{message}</div>
                 </form>

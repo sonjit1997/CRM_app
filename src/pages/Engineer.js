@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../component/Sidebar";
-import "../style/engineer.css";
+import "../style/customer.css";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import MaterialTable from "@material-table/core";
 import { Modal, Button } from "react-bootstrap";
 import { ExportCsv, ExportPdf } from "@material-table/exporters";
 import { fetchTicket, updateSelectTicket } from "../Api/ticket";
-function Admin() {
+function Engineer() {
   const [userModal, setUserModal] = useState(false);
+
   const [ticktDetail, SettickestDetail] = useState([]);
-  const [userDetail, setuserDetail] = useState([]);
   const [selecttedTicket, setselecttedTicket] = useState({});
   const [countTicket, setcountTicket] = useState({});
 
@@ -20,7 +20,6 @@ function Admin() {
   useEffect(() => {
     (async () => {
       fetchTickets();
-    
     })();
   }, []);
 
@@ -28,7 +27,7 @@ function Admin() {
     fetchTicket()
       .then(function (response) {
         if (response.status === 200) {
-          // console.log(response)
+          //console.log(response)
           SettickestDetail(response.data);
           ticketCounting(response.data);
         }
@@ -48,7 +47,7 @@ function Admin() {
       ticketPriority: ticktDetail.ticketPriority,
       title: ticktDetail.title,
     };
-    // console.log(ticket);
+    //console.log(ticket);
     setselecttedTicket(ticket);
     setUserModal(true);
   };
@@ -61,6 +60,12 @@ function Admin() {
     if (e.target.name === "title") {
       selecttedTicket.title = e.target.value;
     }
+    else if (e.target.name === "description"){
+      selecttedTicket.description = e.target.value;
+    }
+    else if (e.target.name === "status"){
+      selecttedTicket.status = e.target.value;
+    }
 
     updateselecttedTicket(Object.assign({}, selecttedTicket));
   };
@@ -72,6 +77,7 @@ function Admin() {
        // console.log(selecttedTicket);
         console.log("update successfully");
         closeUserModal();
+      fetchTickets()
       })
       .catch(function (error) {
         console.log(error);
@@ -104,14 +110,14 @@ function Admin() {
           <Sidebar />
         </div>
         <div className="container col m-2  ">
-          <h1 className="text-info text-center "> WELCOME ENGINEER</h1>
+          <h1 className="text-center" id="main">WELCOME  {localStorage.getItem("userTypes")}</h1>
           <h6 className=" text-muted text-center">
             Take a quick look at your stats below{" "}
           </h6>
           <div className="row my-5 mx-2 text-center ">
             <div className="col my-1">
               <div
-                className="card bg-warning bg-opacity-25"
+                className="rounded-pill bg-warning bg-opacity-25"
                 id="border-a"
                 style={{ width: 12 + "rem" }}
               >
@@ -141,14 +147,14 @@ function Admin() {
 
             <div className="col my-1">
               <div
-                className="card bg-success bg-opacity-25 "
+                className="rounded-pill bg-success bg-opacity-25 "
                 id="border-b"
                 style={{ width: 12 + "rem" }}
               >
                 <div className="cardbody p-1 ">
                   <h5 className="card-subtitle my-1">
                     <i className="bi bi-hourglass-split mx-2" id="pen-b"></i>
-                    IN_PROGRESS
+                    PROGRESS
                   </h5>
                   <br />
                   <div className="row pb-1 ">
@@ -171,7 +177,7 @@ function Admin() {
 
             <div className="col my-1">
               <div
-                className="card bg-danger bg-opacity-25"
+                className="rounded-pill bg-danger bg-opacity-25"
                 id="border-c"
                 style={{ width: 12 + "rem" }}
               >
@@ -201,7 +207,7 @@ function Admin() {
 
             <div className="col my-1">
               <div
-                className="card bg-info bg-opacity-25"
+                className="rounded-pill bg-info bg-opacity-25"
                 id="border-d"
                 style={{ width: 12 + "rem" }}
               >
@@ -243,6 +249,11 @@ function Admin() {
               { title: "TITLE", field: "title" },
               { title: "DESCRIPTION", field: "description" },
               {
+                title: "CREATED TIME",
+                field: "createdAt",
+              },
+             
+              {
                 title: "STATUS",
                 field: "status",
                 lookup: {
@@ -267,7 +278,7 @@ function Admin() {
                 },
               ],
               headerStyle: {
-                backgroundColor: "rgb(160, 32, 32)",
+                backgroundColor: "#0F3443",
                 color: "#fff",
               },
               rowStyle: {
@@ -290,7 +301,7 @@ function Admin() {
                 <Modal.Title>Edit Details</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <form onSubmit={updateTicket}>
+              <form onSubmit={updateTicket}>
                   <div className="p-1">
                     <h5 className="text-danger">
                       User ID :{selecttedTicket.id}
@@ -306,6 +317,30 @@ function Admin() {
                         value={selecttedTicket.title}
                         onChange={onTicketupdate}
                       />
+                    </div>
+                    <div className="input-group mt-2">
+                      <label className="label input-group-text text-success  label-md  ">
+                        DESCRIPTION
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="description"
+                        value={selecttedTicket.description}
+                        onChange={onTicketupdate}
+                      />
+                    </div>
+                   
+                    <div className="input-group mt-2">
+                      <label className="label input-group-text text-success   label-md  ">
+                        STATUS
+                      </label>
+                      <select className="form-select" name="status" value={selecttedTicket.status} onChange={onTicketupdate}>
+                                            <option value="OPEN">OPEN</option>
+                                            <option value="IN_PROGRESS">IN_PROGRESS</option>
+                                            <option value="BLOCKED">BLOCKED</option>
+                                            <option value="CLOSED">CLOSED</option>
+                                          </select>
                     </div>
                     <Button
                       type="submit"
@@ -324,4 +359,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default Engineer;

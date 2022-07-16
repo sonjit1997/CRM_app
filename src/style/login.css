@@ -14,13 +14,13 @@ border: none;
 #imgll{
     margin-left: 41%;
     font-size: 4vw;
-    color: rgb(240, 242, 204);
+    color: rgb(33, 113, 142);
     
 }
 #imgl{
-    margin-left: 33%;
+    margin-left: 5vw;
     font-size: 4vw;
-    color: rgb(240, 242, 204);
+    color: rgb(33, 113, 142);
     
 }
 .signup{
@@ -40,3 +40,38 @@ input{
     color: rgb(19, 5, 107);
     opacity: 90%;
 }
+#signupbtn{
+  margin-left: 72%;
+  margin-top: 8px;
+  font-weight: 600;
+  color: rgb(9, 70, 93);
+  border-bottom: 2px solid rgb(17, 113, 135) ;
+  
+}
+#signupbtn:hover{
+    border-bottom: 2px solid rgb(23, 188, 225) ;
+}
+#loginbtn{
+    font-weight: 600;
+    color: rgb(10, 35, 75);
+    background-color: rgb(67, 173, 211);
+}
+
+#signupbtn2{
+    margin-left: 35%;
+  margin-top: 8px;
+    font-weight: 600;
+    color: rgb(10, 35, 75);
+    background-color: rgb(67, 173, 211);
+}
+
+#loginbtn2{
+    margin-top: 8px;
+    font-weight: 600;
+    color: rgb(9, 70, 93);
+    border-bottom: 2px solid rgb(17, 113, 135) ;
+    
+  }
+  #loginbtn2:hover{
+      border-bottom: 2px solid rgb(23, 188, 225) ;
+  }

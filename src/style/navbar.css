@@ -1,0 +1,13 @@
+#nav{
+    background-image: linear-gradient(to right,#08222d,#2a93bd);
+}
+
+.box{
+     
+    text-align: center;
+    background-image: linear-gradient(to right,#08222d,#166a8b);
+    
+    font: 2em sans-serif;
+    border-radius: 2%;
+
+}

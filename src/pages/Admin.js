@@ -6,16 +6,24 @@ import MaterialTable from "@material-table/core";
 import { Modal, Button } from "react-bootstrap";
 import { ExportCsv, ExportPdf } from "@material-table/exporters";
 import { fetchTicket, updateSelectTicket } from "../Api/ticket";
-import { getAllusers, getuserId } from "../Api/user";
+import { getAllusers,updateSelectteduserId} from "../Api/user";
+
+
 function Admin() {
   const [userModal, setUserModal] = useState(false);
+  const [userrModal, setUserrModal] = useState(false);
+
   const [ticktDetail, SettickestDetail] = useState([]);
-  const [userDetail, setuserDetail] = useState([]);
   const [selecttedTicket, setselecttedTicket] = useState({});
   const [countTicket, setcountTicket] = useState({});
+  
+  const [userDetail, setuserDetail] = useState([]);
+  const [selecttedUser, setselecttedUser] = useState({});
+
 
   const closeUserModal = () => {
     setUserModal(false);
+    setUserrModal(false);
   };
 
   useEffect(() => {
@@ -25,11 +33,12 @@ function Admin() {
     })();
   }, []);
 
+   //ticket detail and updation
   const fetchTickets = () => {
     fetchTicket()
       .then(function (response) {
         if (response.status === 200) {
-          // console.log(response)
+          console.log(response);
           SettickestDetail(response.data);
           ticketCounting(response.data);
         }
@@ -39,15 +48,17 @@ function Admin() {
       });
   };
 
-  const getuser = () => {
-    getAllusers()
+  
+  const updateTicket = (e) => {
+    e.preventDefault();
+    updateSelectTicket(selecttedTicket.id, selecttedTicket)
       .then(function (response) {
-        if (response.status === 200) {
-          // console.log(response)
-          setuserDetail(response.data);
-        }
+       // console.log(selecttedTicket);
+        console.log("update successfully");
+        closeUserModal();
+        fetchTickets();
       })
-      .catch((error) => {
+      .catch(function (error) {
         console.log(error);
       });
   };
@@ -70,26 +81,23 @@ function Admin() {
     setselecttedTicket(data);
   };
 
-  const onTicketupdate = (e) => {
+ const onTicketupdate = (e) => {
     if (e.target.name === "title") {
       selecttedTicket.title = e.target.value;
+    }
+    else if (e.target.name === "description"){
+      selecttedTicket.description = e.target.value;
+    }
+    else if (e.target.name === "assignee"){
+      selecttedTicket.assignee = e.target.value;
+    }
+    else if (e.target.name === "status"){
+      selecttedTicket.status = e.target.value;
     }
 
     updateselecttedTicket(Object.assign({}, selecttedTicket));
   };
-
-  const updateTicket = (e) => {
-    e.preventDefault();
-    updateSelectTicket(selecttedTicket.id, selecttedTicket)
-      .then(function (response) {
-        console.log(selecttedTicket);
-        console.log("update successfully");
-        closeUserModal();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+ 
 
   const ticketCounting = (tickets) => {
     const ticketType = {
@@ -108,7 +116,68 @@ function Admin() {
     setcountTicket(Object.assign({}, ticketType));
   };
 
-  //console.log(countTicket);
+  //user detail and updation
+
+  const getuser = () => {
+    getAllusers()
+      .then(function (response) {
+        if (response.status === 200) {
+           //console.log(response)
+          setuserDetail(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const updateUser = (e) => {
+    e.preventDefault();
+    updateSelectteduserId(selecttedUser.userId )
+      .then(function (response) {
+        //console.log(selecttedUser);
+        //console.log("update successfully");
+        closeUserModal();
+       
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  const editUser = (userdetail) => {
+    const user = {
+      name: userdetail.name,
+      email: userdetail.email,
+      userId: userdetail.userId,
+      userStatus: userdetail.userStatus,
+      userType: userdetail.userTypes,
+    };
+     console.log(user);
+    setselecttedUser(user);
+    setUserrModal(true);
+  };
+
+  const updateselecttedUser = (data) => {
+    setselecttedUser(data);
+    console.log(selecttedUser)
+  };
+
+  const onUserupdate = (e) => {
+    if (e.target.name === "name") {
+      selecttedUser.name = e.target.value;
+    }
+    else if (e.target.name === "email"){
+      selecttedUser.email = e.target.value;
+    }
+    else if (e.target.name === "status"){
+      selecttedUser.userStatus = e.target.value;
+    }
+    
+    updateselecttedUser(Object.assign({}, selecttedUser));
+  };
+
+  
+  
 
   return (
     <div className="bg-light min-vh-100">
@@ -117,14 +186,17 @@ function Admin() {
           <Sidebar />
         </div>
         <div className="container col m-2  ">
-          <h1 className="text-info text-center "> WELCOME ADMIN</h1>
+          <h1 className=" text-center " id="main">
+            {" "}
+            WELCOME {localStorage.getItem("userTypes")}
+          </h1>
           <h6 className=" text-muted text-center">
             Take a quick look at your stats below{" "}
           </h6>
-          <div className="row my-5 mx-2 text-center ">
+          <div className="row my-5 mx-2  text-center ">
             <div className="col my-1">
               <div
-                className="card bg-warning bg-opacity-25"
+                className="rounded-pill bg-warning bg-opacity-25 "
                 id="border-a"
                 style={{ width: 12 + "rem" }}
               >
@@ -154,14 +226,14 @@ function Admin() {
 
             <div className="col my-1">
               <div
-                className="card bg-success bg-opacity-25 "
+                className="rounded-pill bg-success bg-opacity-25 "
                 id="border-b"
                 style={{ width: 12 + "rem" }}
               >
                 <div className="cardbody p-1 ">
                   <h5 className="card-subtitle my-1">
                     <i className="bi bi-hourglass-split mx-2" id="pen-b"></i>
-                    IN_PROGRESS
+                    PROGRESS
                   </h5>
                   <br />
                   <div className="row pb-1 ">
@@ -184,7 +256,7 @@ function Admin() {
 
             <div className="col my-1">
               <div
-                className="card bg-danger bg-opacity-25"
+                className="rounded-pill bg-danger bg-opacity-25"
                 id="border-c"
                 style={{ width: 12 + "rem" }}
               >
@@ -212,9 +284,9 @@ function Admin() {
               </div>
             </div>
 
-            <div className="col my-1">
+            <div className="col my-1 p-0">
               <div
-                className="card bg-info bg-opacity-25"
+                className="rounded-pill bg-info bg-opacity-25"
                 id="border-d"
                 style={{ width: 12 + "rem" }}
               >
@@ -253,8 +325,18 @@ function Admin() {
                 title: "USER ID",
                 field: "id",
               },
-              { title: "TITLE", field: "title" },
-              { title: "DESCRIPTION", field: "description" },
+              { title: "TITLE",
+               field: "title" },
+              {
+                title: "ASSIGNEE",
+                field: "assignee",
+              },
+              {
+                title: "CREATED TIME",
+                field: "createdAt",
+              },
+            
+              
               {
                 title: "STATUS",
                 field: "status",
@@ -280,7 +362,7 @@ function Admin() {
                 },
               ],
               headerStyle: {
-                backgroundColor: "rgb(160, 32, 32)",
+                backgroundColor: "#0F3443",
                 color: "#fff",
               },
               rowStyle: {
@@ -320,6 +402,50 @@ function Admin() {
                         onChange={onTicketupdate}
                       />
                     </div>
+                    <div className="input-group mt-2">
+                      <label className="label input-group-text text-success  label-md  ">
+                        DESCRIPTION
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="description"
+                        value={selecttedTicket.description}
+                        onChange={onTicketupdate}
+                      />
+                    </div>
+                    <div className="input-group mt-2">
+                      <label className="label input-group-text text-success  label-md ">
+                       ASSIGNEE
+                      </label>
+                      <select
+                        className="form-select text-center"
+                        name="assignee"
+                        value={selecttedTicket.assignee}
+                        onChange={onTicketupdate}
+                      >
+                        {userDetail.map((e, key) => {
+                          if (e.userTypes === "ENGINEER")
+                            return (
+                              <option key={key} value={e.value}>
+                                {e.name}
+                              </option>
+                            );
+                          else return undefined;
+                        })}
+                      </select>
+                    </div>
+                    <div className="input-group mt-2">
+                      <label className="label input-group-text text-success   label-md  ">
+                        STATUS
+                      </label>
+                      <select className="form-select" name="status" value={selecttedTicket.status} onChange={onTicketupdate}>
+                                            <option value="OPEN">OPEN</option>
+                                            <option value="IN_PROGRESS">IN_PROGRESS</option>
+                                            <option value="BLOCKED">BLOCKED</option>
+                                            <option value="CLOSED">CLOSED</option>
+                                          </select>
+                    </div>
                     <Button
                       type="submit"
                       className="btn btn-success my-1 float-end"
@@ -335,6 +461,9 @@ function Admin() {
           )}
 
           <MaterialTable
+            onRowClick={(e, userdetail) => editUser(userdetail)}
+            data={userDetail}
+            title="USER DETAILS"
             columns={[
               {
                 title: "USER ROLE",
@@ -351,6 +480,12 @@ function Admin() {
               {
                 title: "STATUS",
                 field: "userStatus",
+                lookup: {
+                  APPROVED: "APPROVED",
+                  PENDING: "PENDING",
+                  REJECTED: "REJECTED",
+                
+                },
               },
             ]}
             options={{
@@ -367,17 +502,79 @@ function Admin() {
                 },
               ],
               headerStyle: {
-                backgroundColor: "rgb(160, 32, 32)",
+                backgroundColor: "#0F3443",
                 color: "#fff",
               },
               rowStyle: {
                 backgroundColor: "#eee",
               },
             }}
-            title="USER DETAILS"
-            data={userDetail}
           />
           <br />
+          {userrModal ? (
+            <Modal
+              show={userrModal}
+              onHide={closeUserModal}
+              backdrop="static"
+              centered
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Details</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <form onSubmit={updateUser}>
+                  <div className="p-1">
+                    <h5 className="text-danger">
+                      User ID :{selecttedUser.userId}
+                    </h5>
+                      <div className="input-group">
+                      <label className="label input-group-text text-success label-md ">
+                        NAME
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="name"
+                        value={selecttedUser.name}
+                        onChange={onUserupdate}
+                      />
+                    </div>
+                    <div className="input-group mt-2">
+                      <label className="label input-group-text text-success  label-md  ">
+                       EMAIL
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="email"
+                        value={selecttedUser.email}
+                        onChange={onUserupdate}
+                      />
+                    </div>
+                    <div className="input-group mt-2">
+                      <label className="label input-group-text text-success   label-md  ">
+                        STATUS
+                      </label>
+  
+                   <select name="status" className="form-select" value={selecttedUser.userStatus} onChange={onUserupdate}>
+                                              <option value="APPROVED">APPROVED</option>
+                                              <option value="REJECTED">REJECTED</option>
+                                              <option value="PENDING">PENDING</option>
+                                          </select>
+                    </div>
+                    <Button
+                      type="submit"
+                      className="btn btn-success my-1 float-end"
+                    >
+                      Update
+                    </Button>
+                  </div>
+                </form>
+              </Modal.Body>
+            </Modal>
+          ) : (
+            ""
+          )}
           <div className="text-center "></div>
         </div>
       </div>
